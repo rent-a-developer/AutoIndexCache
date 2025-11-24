@@ -19,7 +19,6 @@
 		<Description>A high-performance, thread-safe cache for .NET applications that provides automatic indexing of cached data.</Description>
 		<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
-		<DocumentationFile>AutoIndexCache.xml</DocumentationFile>
 		<IncludeSymbols>true</IncludeSymbols>
 		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
 		<Version>1.3.0</Version>
@@ -34,6 +33,7 @@
 		<RootNamespace>RentADeveloper.AutoIndexCache</RootNamespace>
 		<AssemblyTitle>rent-a-developer AutoIndexCache</AssemblyTitle>
 		<AssemblyName>RentADeveloper.AutoIndexCache</AssemblyName>
+		<DocumentationFile>RentADeveloper.AutoIndexCache.xml</DocumentationFile>
 	</PropertyGroup>
 
 	<ItemGroup>
