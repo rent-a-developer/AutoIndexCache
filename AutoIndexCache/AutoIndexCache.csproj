@@ -16,7 +16,7 @@
 		<RepositoryUrl>https://github.com/rent-a-developer/AutoIndexCache.git</RepositoryUrl>
 		<RepositoryType>GIT</RepositoryType>
 		<PackageTags>cache index automatic thread-safe</PackageTags>
-		<Description>A cache for .NET applications that provides automatic indexing of cache items.</Description>
+		<Description>A high-performance, thread-safe cache for .NET applications that provides automatic indexing of cached data.</Description>
 		<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<DocumentationFile>AutoIndexCache.xml</DocumentationFile>

@@ -2,7 +2,7 @@
 ![semver](https://img.shields.io/badge/semver-1.3.0-blue)
 
 # AutoIndexCache
-A thread-safe, lazy-loading cache for .NET applications that provides automatic indexing of the cached items.
+A high-performance, thread-safe cache for .NET applications that provides automatic indexing of cached data.
 
 ```csharp
 using System;
@@ -20,7 +20,7 @@ public class Program
 {
     public static void Main(String[] args)
     {
-        var cache = new AutoIndexCache();
+        var cache = new AutoIndexCache.AutoIndexCache();
 
         cache.SetItemsLoader(() => LoadUsers());
 
@@ -89,9 +89,7 @@ So instead of this:
 ```csharp
 class Service
 {
-    private readonly AutoIndexCache cache;
-
-    public Service(AutoIndexCache cache)
+    public Service(IAutoIndexCache cache)
     {
         this.cache = cache;
     }
@@ -100,6 +98,8 @@ class Service
     {
         return this.cache.Items<User>().UniqueIndex(a => a.Id).GetItemOrDefault(id);
     }
+
+    private readonly IAutoIndexCache cache;
 }
 ```
 
@@ -107,11 +107,7 @@ you do this:
 ```csharp
 class Service
 {
-    private readonly AutoIndexCache cache;
-    private readonly IItemList<User> users;
-    private readonly IUniqueIndex<User, Int32> userById;
-
-    public Service(AutoIndexCache cache)
+    public Service(IAutoIndexCache cache)
     {
         this.cache = cache;
         this.users = this.cache.Items<User>();
@@ -122,6 +118,10 @@ class Service
     {
         return this.userById.GetItemOrDefault(id);
     }
+
+    private readonly IAutoIndexCache cache;
+    private readonly IUniqueIndex<User, Int64> userById;
+    private readonly IItemsList<User> users;
 }
 ```
 
