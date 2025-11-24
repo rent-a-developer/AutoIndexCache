@@ -1,0 +1,603 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>AutoIndexCache</name>
+    </assembly>
+    <members>
+        <member name="T:AutoIndexCache.IAutoIndexCache">
+            <summary>
+            Represents a thread-safe, lazy loading cache that automatically indexes cached items.
+            </summary>
+        </member>
+        <member name="M:AutoIndexCache.IAutoIndexCache.Items``1">
+            <summary>
+            Gets the list of cached items of the type <typeparamref name="TItem" /> from this cache.
+            </summary>
+            <typeparam name="TItem">The type of cache items to get.</typeparam>
+            <returns>An instance of <see cref="T:AutoIndexCache.IItemsList`1" /> that allows to access the cached items of the type <typeparamref name="TItem" />.</returns>
+            <exception cref="T:AutoIndexCache.MissingItemsLoaderException">No cache items loader has been set for the cache item type <typeparamref name="TItem" /> yet.</exception>
+            <example>
+            <code>
+            <![CDATA[
+            var cache = new AutoIndexCache();
+            cache.SetItemsLoader<User>(() => this.LoadUsers());
+            var users = cache.Items<User>().GetAllItems();
+            ]]>
+            </code>
+            </example>
+        </member>
+        <member name="M:AutoIndexCache.IAutoIndexCache.SetItemsLoader``1(System.Func{``0[]})">
+            <summary>
+            Sets the delegate that loads the cache items of the type <typeparamref name="TItem" /> when cache items of that type are requested from the cache.
+            If a cache items loader has already been set for the type <typeparamref name="TItem" /> on this instance, the old cache items loader is replaced and the corresponding <see cref="T:AutoIndexCache.ItemsList`1" /> is reset, so the new cache items loader will be used to load the cache items the next time the cache items are requested from the cache.
+            </summary>
+            <typeparam name="TItem">The type of cache items the loader loads.</typeparam>
+            <param name="itemsLoader">The delegate that loads the cache items of the type <typeparamref name="TItem" />.</param>
+            <exception cref="T:System.ArgumentNullException"><paramref name="itemsLoader" /> is null.</exception>
+            <remarks>
+            The specified cache items loader delegate may not return null.
+            
+            The specified cache items loader delegate may not access the cached items of the type <typeparamref name="TItem" /> inside its method body.
+            For example, the cache items loader for the cache item type "User" may not call the following methods inside its method body:
+            <code>
+            <![CDATA[
+            - IItemsList<User>.GetAllItems
+            - IItemsList<User>.Reset
+            - IItemsList<User>.NonUniqueIndex<TKey>
+            - IItemsList<User>.UniqueIndex<TKey>
+            ]]>
+            </code>
+            However, the cache items loader is allowed to access cache items of other types.
+            For example, the cache items loader for the cache item type "User" is allowed call the following methods inside its method body:
+            <code>
+            <![CDATA[
+            - IItemsList<Group>.GetAllItems
+            - IItemsList<Group>.Reset
+            - IItemsList<Group>.NonUniqueIndex<TKey>
+            - IItemsList<Group>.UniqueIndex<TKey>
+            ]]>
+            </code>
+            However, cyclic dependencies are not allowed.
+            For example, when the cache items loader of the cache item type "User" accesses cache items of the type "Group" and the cache items loader of the type "Group" accesses cache items of the type "User" (meaning User > Group > User) this is not allowed.
+            </remarks>
+            <example>
+            <code>
+            <![CDATA[
+            var cache = new AutoIndexCache();
+            cache.SetItemsLoader<User>(() => this.LoadUsers());
+            var users = cache.Items<User>().GetAllItems();
+            ]]>
+            </code>
+            </example>
+        </member>
+        <member name="T:AutoIndexCache.AutoIndexCache">
+            <summary>
+            A thread-safe, lazy loading cache that automatically indexes cached items.
+            </summary>
+            <remarks>All public and protected members of <see cref="T:AutoIndexCache.AutoIndexCache" /> are thread-safe and may be used concurrently from multiple threads.</remarks>
+        </member>
+        <member name="M:AutoIndexCache.AutoIndexCache.Items``1">
+            <inheritdoc />
+        </member>
+        <member name="M:AutoIndexCache.AutoIndexCache.SetItemsLoader``1(System.Func{``0[]})">
+            <inheritdoc />
+        </member>
+        <member name="T:AutoIndexCache.CopyOnWriteDictionary`2">
+            <summary>
+            A thread-safe append-only dictionary with internal copy-on-write behavior.
+            </summary>
+            <typeparam name="TKey">The type of the keys in the dictionary.</typeparam>
+            <typeparam name="TValue">The type of the values in the dictionary.</typeparam>
+        </member>
+        <member name="P:AutoIndexCache.CopyOnWriteDictionary`2.Values">
+            <summary>
+            Gets a snapshot containing all the values in the <see cref="T:AutoIndexCache.CopyOnWriteDictionary`2" />.
+            </summary>
+            <remarks>
+            This property returns a copy of all the values.
+            It's not kept in sync with <see cref="T:AutoIndexCache.CopyOnWriteDictionary`2" />.
+            </remarks>
+        </member>
+        <member name="M:AutoIndexCache.CopyOnWriteDictionary`2.AddOrUpdate(`0,System.Func{`0,`1},System.Func{`0,`1,`1})">
+            <summary>
+            Adds a key/value pair to the <see cref="T:AutoIndexCache.CopyOnWriteDictionary`2" /> if the key does not already
+            exist, or updates a key/value pair in the <see cref="T:AutoIndexCache.CopyOnWriteDictionary`2" /> if the key
+            already exists.
+            </summary>
+            <param name="key">The key to be added or whose value should be updated.</param>
+            <param name="addValueFactory">The function used to generate a value for an absent key.</param>
+            <param name="updateValueFactory">The function used to generate a new value for an existing key based on the key's existing value.</param>
+            <exception cref="T:System.ArgumentNullException"><paramref name="key" /> is a null reference.</exception>
+            <exception cref="T:System.ArgumentNullException"><paramref name="addValueFactory" /> is a null reference.</exception>
+            <exception cref="T:System.ArgumentNullException"><paramref name="updateValueFactory" /> is a null reference.</exception>
+            <exception cref="T:System.OverflowException">The dictionary contains too many elements.</exception>
+            <returns>
+            The new value for the key.
+            This will be either be the result of <paramref name="addValueFactory" /> (if the key was absent) or the result of <paramref name="updateValueFactory" /> (if the key was present).
+            </returns>
+        </member>
+        <member name="M:AutoIndexCache.CopyOnWriteDictionary`2.GetOrAdd(`0,System.Func{`0,`1})">
+            <summary>
+            Adds a key/value pair to the <see cref="T:AutoIndexCache.CopyOnWriteDictionary`2" /> if the key does not already exist.
+            </summary>
+            <param name="key">The key of the element to add.</param>
+            <param name="valueFactory">The function used to generate a value for the key.</param>
+            <exception cref="T:System.ArgumentNullException"><paramref name="key" /> is a null reference.</exception>
+            <exception cref="T:System.ArgumentNullException"><paramref name="valueFactory" /> is a null reference.</exception>
+            <exception cref="T:System.OverflowException">The dictionary contains too many elements.</exception>
+            <returns>
+            The value for the key.
+            This will be either the existing value for the key if the key is already in the dictionary,
+            or the new value for the key as returned by <paramref name="valueFactory" /> if the key was not in the dictionary.
+            </returns>
+        </member>
+        <member name="M:AutoIndexCache.CopyOnWriteDictionary`2.TryGetValue(`0,`1@)">
+            <summary>
+            Attempts to get the value associated with the specified key from the <see cref="T:AutoIndexCache.CopyOnWriteDictionary`2" />.
+            </summary>
+            <param name="key">The key of the value to get.</param>
+            <param name="value">
+            When this method returns, <paramref name="value" /> contains the object from
+            the <see cref="T:AutoIndexCache.CopyOnWriteDictionary`2" /> with the specified key or the default value of
+            <typeparamref name="TValue" />, if the operation failed.
+            </param>
+            <returns>true if the key was found in the <see cref="T:AutoIndexCache.CopyOnWriteDictionary`2" />; otherwise, false.</returns>
+            <exception cref="T:System.ArgumentNullException"><paramref name="key" /> is a null reference.</exception>
+        </member>
+        <member name="T:AutoIndexCache.DuplicateKeyException">
+            <summary>
+            Thrown when multiple cache items have the same key for a unique index.
+            </summary>
+        </member>
+        <member name="M:AutoIndexCache.DuplicateKeyException.#ctor(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="T:AutoIndexCache.ItemsAccessedFromInsideItemsLoaderException">
+            <summary>
+            Thrown when an attempt was made to access cached items of certain type from inside the cache items loader for that cache item type (e.g. an attempt was made to access cached Users from inside the cache items loader for the User type).
+            </summary>
+        </member>
+        <member name="M:AutoIndexCache.ItemsAccessedFromInsideItemsLoaderException.#ctor(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="T:AutoIndexCache.IItemsList`1">
+            <summary>
+            Represents a list of cached items of the type <typeparamref name="TItem" />.
+            Allows to access the cache items of that type, to access unique and non-unique indexes for that type and to reset the list.
+            </summary>
+            <typeparam name="TItem">The type of cached items the list contains.</typeparam>
+        </member>
+        <member name="M:AutoIndexCache.IItemsList`1.ForceLoadItems">
+            <summary>
+            Forces this list to load the cache items of the type <typeparamref name="TItem" /> immediately, using the cache items loader specified for the cache item type <typeparamref name="TItem" />.
+            </summary>
+            <remarks>
+            Per default cache items are lazily loaded when they are requested from the cache (e.g. when <see cref="M:AutoIndexCache.ItemsList`1.GetAllItems" /> is called).
+            This method loads the cache items immediately.
+            </remarks>
+        </member>
+        <member name="M:AutoIndexCache.IItemsList`1.GetAllItems">
+            <summary>
+            Gets all cached items of the type <typeparamref name="TItem" />.
+            </summary>
+            <returns>A read-only list of all cached items of the type <typeparamref name="TItem" />.</returns>
+            <exception cref="T:AutoIndexCache.ItemsLoaderReturnedNullException">The cache items loader for the cache item type <typeparamref name="TItem" /> has returned a null value instead of a list of cache items.</exception>
+            <exception cref="T:AutoIndexCache.ItemsLoaderFailedException">The cache items loader for the cache item type <typeparamref name="TItem" /> has thrown an exception.</exception>
+            <exception cref="T:AutoIndexCache.ItemsAccessedFromInsideItemsLoaderException">An attempt was made to access cache items of the type <typeparamref name="TItem" /> from inside the cache items loader for that cache item type.</exception>
+            <example>
+            <code>
+            <![CDATA[
+            var cache = new AutoIndexCache();
+            cache.SetItemsLoader<User>(() => this.LoadUsers());
+            var users = cache.Items<User>().GetAllItems();
+            ]]>
+            </code>
+            </example>
+        </member>
+        <member name="M:AutoIndexCache.IItemsList`1.NonUniqueIndex``1(System.Func{`0,``0},System.String)">
+            <summary>
+            Gets a non-unique index for the cached items of the type <typeparamref name="TItem" />.
+            </summary>
+            <typeparam name="TKey">The type of keys in the index.</typeparam>
+            <param name="keyExpression">A delegate that gets the index key for each cached item.</param>
+            <param name="keyExpressionString">The string representation of <paramref name="keyExpression" />.</param>
+            <returns>An instance of <see cref="T:AutoIndexCache.INonUniqueIndex`2" /> that provides access to the specified non-unique index.</returns>
+            <example>
+            <code>
+            <![CDATA[
+            var cache = new AutoIndexCache();
+            cache.SetItemsLoader<User>(() => this.LoadUsers());
+            var usersOfGroup1 = cache.Items<User>().NonUniqueIndex(a => a.GroupId).GetAll(1);
+            var activeUsersOfGroup10 = cache.Items<User>().NonUniqueIndex(a => new { a.IsActive, a.GroupId}).GetItems(new { IsActive = true, GroupId = 10 });
+            ]]>
+            </code>
+            </example>
+        </member>
+        <member name="M:AutoIndexCache.IItemsList`1.Reset">
+            <summary>
+            Removes all cache items of the type <typeparamref name="TItem" /> from the cache.
+            The next time cache items of the type <typeparamref name="TItem" /> are requested from the cache, they are loaded again using the cache items loader for that cache item type (<see cref="M:AutoIndexCache.AutoIndexCache.SetItemsLoader``1(System.Func{``0[]})" />).
+            </summary>
+            <exception cref="T:AutoIndexCache.ItemsAccessedFromInsideItemsLoaderException">An attempt was made to reset the cache items of the type <typeparamref name="TItem" /> from inside the cache items loader for that cache item type.</exception>
+            <example>
+            <code>
+            <![CDATA[
+            var cache = new AutoIndexCache();
+            cache.SetItemsLoader<User>(() => this.LoadUsers());
+            var users = cache.Items<User>().GetAllItems();
+            cache.Items<User>().Reset();
+            var updatedUsers = cache.Items<User>().GetAllItems(); // this.LoadUsers will be called again to get the updated list of users.
+            ]]>
+            </code>
+            </example>
+        </member>
+        <member name="M:AutoIndexCache.IItemsList`1.UniqueIndex``1(System.Func{`0,``0},System.String)">
+            <summary>
+            Gets a unique index for the cached items of the type <typeparamref name="TItem" />.
+            </summary>
+            <typeparam name="TKey">The type of keys in the index.</typeparam>
+            <param name="keyExpression">A delegate that gets the index key for each cached item.</param>
+            <param name="keyExpressionString">The string representation <paramref name="keyExpression" />.</param>
+            <returns>An instance of <see cref="T:AutoIndexCache.IUniqueIndex`2" /> that provides access to the specified unique index.</returns>
+            <example>
+            <code>
+            <![CDATA[
+            var cache = new AutoIndexCache();
+            cache.SetItemsLoader<User>(() => this.LoadUsers());
+            var user1 = cache.Items<User>().UniqueIndex(a => a.Id).GetItemOrDefault(1);
+            ]]>
+            </code>
+            </example>
+        </member>
+        <member name="P:AutoIndexCache.IItemsList`1.ItemsLoader">
+            <summary>
+            The cache items loader that loads the cache items for this instance.
+            </summary>
+        </member>
+        <member name="T:AutoIndexCache.ItemsList`1">
+            <summary>
+            A list of cached items of the type <typeparamref name="TItem" />.
+            Allows to access the cache items of that type, to access unique and non-unique indexes for that type and to reset the list.
+            </summary>
+            <typeparam name="TItem">The type of cached items the list contains.</typeparam>
+            <remarks>All public and protected members of <see cref="T:AutoIndexCache.ItemsList`1" /> are thread-safe and may be used concurrently from multiple threads.</remarks>
+        </member>
+        <member name="M:AutoIndexCache.ItemsList`1.#ctor(System.Func{`0[]})">
+            <summary>
+            Initializes a new instance of this class.
+            </summary>
+            <param name="itemsLoader">The delegate that loads the cache items of the type <typeparamref name="TItem" />.</param>
+        </member>
+        <member name="P:AutoIndexCache.ItemsList`1.ItemsLoader">
+            <inheritdoc />
+        </member>
+        <member name="M:AutoIndexCache.ItemsList`1.ForceLoadItems">
+            <inheritdoc />
+        </member>
+        <member name="M:AutoIndexCache.ItemsList`1.GetAllItems">
+            <inheritdoc />
+        </member>
+        <member name="M:AutoIndexCache.ItemsList`1.NonUniqueIndex``1(System.Func{`0,``0},System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:AutoIndexCache.ItemsList`1.Reset">
+            <inheritdoc />
+        </member>
+        <member name="M:AutoIndexCache.ItemsList`1.UniqueIndex``1(System.Func{`0,``0},System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:AutoIndexCache.ItemsList`1.GetAllItemsSpan">
+            <summary>
+            Gets a <see cref="T:System.ReadOnlySpan`1" /> over the cached items of the type <typeparamref name="TItem" />.
+            </summary>
+            <returns>A <see cref="T:System.ReadOnlySpan`1" /> over the cached items of the type <typeparamref name="TItem" />.</returns>
+            <exception cref="T:AutoIndexCache.ItemsLoaderReturnedNullException">The cache items loader for the cache item type <typeparamref name="TItem" /> has returned a null value instead of a list of cache items.</exception>
+            <exception cref="T:AutoIndexCache.ItemsLoaderFailedException">The cache items loader for the cache item type <typeparamref name="TItem" /> has thrown an exception.</exception>
+            <exception cref="T:AutoIndexCache.ItemsAccessedFromInsideItemsLoaderException">An attempt was made to access cache items of the type <typeparamref name="TItem" /> from inside the cache items loader for that cache item type.</exception>
+            <example>
+            <code>
+            <![CDATA[
+            var cache = new AutoIndexCache();
+            cache.SetItemsLoader<User>(() => this.LoadUsers());
+            var users = cache.Items<User>().GetAllItems();
+            ]]>
+            </code>
+            </example>
+        </member>
+        <member name="M:AutoIndexCache.ItemsList`1.GetOrLoadItems">
+            <summary>
+            Gets the cache items of this instance and loads them if they have not been loaded yet.
+            </summary>
+            <returns>The cache items of this instance.</returns>
+            <exception cref="T:AutoIndexCache.ItemsAccessedFromInsideItemsLoaderException">An attempt was made to access cache items of the type <typeparamref name="TItem" /> from inside the cache items loader for that cache item type.</exception>
+        </member>
+        <member name="M:AutoIndexCache.ItemsList`1.LoadItems">
+            <summary>
+            Loads the cache items for this instance.
+            </summary>
+            <returns>The loaded cache items.</returns>
+            <exception cref="T:AutoIndexCache.ItemsLoaderReturnedNullException">The cache items loader returned a null value.</exception>
+            <exception cref="T:AutoIndexCache.ItemsLoaderFailedException">The cache items loader threw an exception.</exception>
+        </member>
+        <member name="F:AutoIndexCache.ItemsList`1.isCurrentThreadInsideItemsLoaderOfSameItemType">
+            <summary>
+            Determines whether the current thread is inside the cache items loader for the cache item type <typeparamref name="TItem" />.
+            </summary>
+            <remarks>
+            Using the <see cref="T:System.ThreadStaticAttribute" /> here works, because each type of ItemsList gets its own <see cref="F:AutoIndexCache.ItemsList`1.isCurrentThreadInsideItemsLoaderOfSameItemType" /> field.
+            So for example, ItemsList{User} has a different <see cref="F:AutoIndexCache.ItemsList`1.isCurrentThreadInsideItemsLoaderOfSameItemType" /> field than ItemsList{Group}.
+            That way each ItemsList can know whether the current thread is inside the cache items loader for the same cache item type.
+            </remarks>
+        </member>
+        <member name="T:AutoIndexCache.ItemsLoaderFailedException">
+            <summary>
+            Thrown when a cache items loader has thrown an exception.
+            </summary>
+        </member>
+        <member name="M:AutoIndexCache.ItemsLoaderFailedException.#ctor(System.String,System.Exception)">
+            <inheritdoc />
+        </member>
+        <member name="T:AutoIndexCache.ItemsLoaderReturnedNullException">
+            <summary>
+            Thrown when a cache items loader has returned a null value instead of a list of cache items.
+            </summary>
+        </member>
+        <member name="M:AutoIndexCache.ItemsLoaderReturnedNullException.#ctor(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="T:AutoIndexCache.MissingItemsLoaderException">
+            <summary>
+            Thrown when an attempt was made to access cached items of certain type when no cache items loader has been set yet for that cache item type.
+            </summary>
+        </member>
+        <member name="M:AutoIndexCache.MissingItemsLoaderException.#ctor(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="T:AutoIndexCache.INonUniqueIndex`2">
+            <summary>
+            Represents a non-unique index for cached items of the type <typeparamref name="TItem" />.
+            </summary>
+            <typeparam name="TItem">The type of cache items indexed by the index.</typeparam>
+            <typeparam name="TKey">The type of keys in the index.</typeparam>
+        </member>
+        <member name="M:AutoIndexCache.INonUniqueIndex`2.ContainsKey(`1)">
+            <summary>
+            Determines whether this index contains the specified key.
+            </summary>
+            <param name="key">The key to check.</param>
+            <returns>True if this index contains the specified key; otherwise, false.</returns>
+            <exception cref="T:AutoIndexCache.ItemsLoaderReturnedNullException">The cache items loader for the cache item type <typeparamref name="TItem" /> has returned a null value instead of a list of cache items.</exception>
+            <exception cref="T:AutoIndexCache.ItemsLoaderFailedException">The cache items loader for the cache item type <typeparamref name="TItem" /> has thrown an exception.</exception>
+            <exception cref="T:AutoIndexCache.ItemsAccessedFromInsideItemsLoaderException">An attempt was made to access cache items of the type <typeparamref name="TItem" /> from inside the cache items loader for that cache item type.</exception>
+            <example>
+            <code>
+            <![CDATA[
+            var cache = new AutoIndexCache();
+            cache.SetItemsLoader<User>(() => this.LoadUsers());
+            var hasGroup1Users = cache.Items<User>().NonUniqueIndex(a => a.GroupId).ContainsKey(1);
+            ]]>
+            </code>
+            </example>
+        </member>
+        <member name="M:AutoIndexCache.INonUniqueIndex`2.GetItems(`1)">
+            <summary>
+            Gets all cached items of the type <typeparamref name="TItem" /> that satisfy the specified condition.
+            </summary>
+            <param name="condition">The condition the cache items to get must satisfy.</param>
+            <returns>A read-only list of cached items of the type <typeparamref name="TItem" /> that satisfy the specified condition.</returns>
+            <exception cref="T:AutoIndexCache.ItemsLoaderReturnedNullException">The cache items loader for the cache item type <typeparamref name="TItem" /> has returned a null value instead of a list of cache items.</exception>
+            <exception cref="T:AutoIndexCache.ItemsLoaderFailedException">The cache items loader for the cache item type <typeparamref name="TItem" /> has thrown an exception.</exception>
+            <exception cref="T:AutoIndexCache.ItemsAccessedFromInsideItemsLoaderException">An attempt was made to access cache items of the type <typeparamref name="TItem" /> from inside the cache items loader for that cache item type.</exception>
+            <example>
+            <code>
+            <![CDATA[
+            var cache = new AutoIndexCache();
+            cache.SetItemsLoader<User>(() => this.LoadUsers());
+            var usersOfGroup1 = cache.Items<User>().NonUniqueIndex(a => a.GroupId).GetItems(1);
+            var activeUsersOfGroup10 = cache.Items<User>().NonUniqueIndex(a => new { a.IsActive, a.GroupId}).GetItems(new { IsActive = true, GroupId = 10 });
+            ]]>
+            </code>
+            </example>
+        </member>
+        <member name="M:AutoIndexCache.INonUniqueIndex`2.GetKeys">
+            <summary>
+            Gets the keys in this index.
+            </summary>
+            <returns>A read-only collection of the keys in this index.</returns>
+            <exception cref="T:AutoIndexCache.ItemsLoaderReturnedNullException">The cache items loader for the cache item type <typeparamref name="TItem" /> has returned a null value instead of a list of cache items.</exception>
+            <exception cref="T:AutoIndexCache.ItemsLoaderFailedException">The cache items loader for the cache item type <typeparamref name="TItem" /> has thrown an exception.</exception>
+            <exception cref="T:AutoIndexCache.ItemsAccessedFromInsideItemsLoaderException">An attempt was made to access cache items of the type <typeparamref name="TItem" /> from inside the cache items loader for that cache item type.</exception>
+            <example>
+            <code>
+            <![CDATA[
+            var cache = new AutoIndexCache();
+            cache.SetItemsLoader<User>(() => this.LoadUsers());
+            var distinctGroupIds = cache.Items<User>().NonUniqueIndex(a => a.GroupId).GetKeys();
+            ]]>
+            </code>
+            </example>
+        </member>
+        <member name="T:AutoIndexCache.NonUniqueIndex`2">
+            <summary>
+            A non-unique index for cached items of the type <typeparamref name="TItem" />.
+            </summary>
+            <typeparam name="TItem">The type of cache items indexed by the index.</typeparam>
+            <typeparam name="TKey">The type of keys in the index.</typeparam>
+            <remarks>All public and protected members of <see cref="T:AutoIndexCache.NonUniqueIndex`2" /> are thread-safe and may be used concurrently from multiple threads.</remarks>
+        </member>
+        <member name="M:AutoIndexCache.NonUniqueIndex`2.#ctor(AutoIndexCache.ItemsList{`0},System.Func{`0,`1})">
+            <summary>
+            Initializes a new instance of this class.
+            </summary>
+            <param name="itemsList">The items list the index belongs to.</param>
+            <param name="keyExpression">The delegate that gets the non-unique index key for each cache item.</param>
+        </member>
+        <member name="M:AutoIndexCache.NonUniqueIndex`2.ContainsKey(`1)">
+            <inheritdoc />
+        </member>
+        <member name="M:AutoIndexCache.NonUniqueIndex`2.GetItems(`1)">
+            <inheritdoc />
+        </member>
+        <member name="M:AutoIndexCache.NonUniqueIndex`2.GetKeys">
+            <inheritdoc />
+        </member>
+        <member name="M:AutoIndexCache.NonUniqueIndex`2.Reset">
+            <inheritdoc />
+        </member>
+        <member name="M:AutoIndexCache.NonUniqueIndex`2.CreateIndexData">
+            <summary>
+            Creates up-to-date data for this index.
+            </summary>
+            <returns>The up-to-date data for this index.</returns>
+        </member>
+        <member name="T:AutoIndexCache.NonUniqueIndex`2.IndexData">
+            <summary>
+            The data of a <see cref="T:AutoIndexCache.NonUniqueIndex`2" />.
+            </summary>
+            <param name="keyToItems">Maps a key to the cache items that have that key.</param>
+            <param name="keys">The unique keys in the index.</param>
+            <param name="containsNullKey">Determines whether the index contains a null key.</param>
+            <param name="nullKeyItems">A list of cache items that have null as their key.</param>
+        </member>
+        <member name="M:AutoIndexCache.NonUniqueIndex`2.IndexData.#ctor(System.Collections.Generic.Dictionary{`1,System.Collections.Generic.List{`0}},System.Collections.Generic.HashSet{`1},System.Boolean,System.Collections.Generic.IReadOnlyList{`0})">
+            <summary>
+            The data of a <see cref="T:AutoIndexCache.NonUniqueIndex`2" />.
+            </summary>
+            <param name="keyToItems">Maps a key to the cache items that have that key.</param>
+            <param name="keys">The unique keys in the index.</param>
+            <param name="containsNullKey">Determines whether the index contains a null key.</param>
+            <param name="nullKeyItems">A list of cache items that have null as their key.</param>
+        </member>
+        <member name="T:AutoIndexCache.ThrowHelper">
+             <summary>
+             Provides helper methods to throw exceptions.
+             </summary>
+             <remarks>
+             The main purpose of this class is to reduce code size and increase performance.
+            
+             Extracting throw logic to separate methods is a good idea in performance-critical paths because:
+             - It encourages method inlining (smaller methods are more likely to be inlined).
+             - It avoids polluting optimized code paths with exception logic.
+             - It makes code more maintainable by separating normal logic from error handling.
+             </remarks>
+        </member>
+        <member name="T:AutoIndexCache.IUniqueIndex`2">
+            <summary>
+            Represents a unique index for cached items of the type <typeparamref name="TItem" />.
+            </summary>
+            <typeparam name="TItem">The type of cache items indexed by the index.</typeparam>
+            <typeparam name="TKey">The type of keys in the index.</typeparam>
+        </member>
+        <member name="M:AutoIndexCache.IUniqueIndex`2.ContainsKey(`1)">
+            <summary>
+            Determines whether this index contains the specified key.
+            </summary>
+            <param name="key">The key to check.</param>
+            <returns>True if this index contains the specified key; otherwise, false.</returns>
+            <exception cref="T:AutoIndexCache.ItemsLoaderReturnedNullException">The cache items loader for the cache item type <typeparamref name="TItem" /> has returned a null value instead of a list of cache items.</exception>
+            <exception cref="T:AutoIndexCache.ItemsLoaderFailedException">The cache items loader for the cache item type <typeparamref name="TItem" /> has thrown an exception.</exception>
+            <exception cref="T:AutoIndexCache.ItemsAccessedFromInsideItemsLoaderException">An attempt was made to access cache items of the type <typeparamref name="TItem" /> from inside the cache items loader for that cache item type.</exception>
+            <exception cref="T:AutoIndexCache.DuplicateKeyException">Multiple cache items of the type <typeparamref name="TItem" /> have the same key for this unique index.</exception>
+            <example>
+            <code>
+            <![CDATA[
+            var cache = new AutoIndexCache();
+            cache.SetItemsLoader<User>(() => this.LoadUsers());
+            var existsUser1 = cache.Items<User>().UniqueIndex(a => a.Id).ContainsKey(1);
+            ]]>
+            </code>
+            </example>
+        </member>
+        <member name="M:AutoIndexCache.IUniqueIndex`2.GetItemOrDefault(`1)">
+            <summary>
+            Gets the cached item of the type <typeparamref name="TItem" /> that satisfies the specified condition or default(<typeparamref name="TItem" />) if no such cache item was found.
+            </summary>
+            <param name="condition">The condition the cache item to get must satisfy.</param>
+            <returns>The cached item of the type <typeparamref name="TItem" /> that satisfies the specified condition or default(<typeparamref name="TItem" />) if no such cache item was found.</returns>
+            <exception cref="T:AutoIndexCache.ItemsLoaderReturnedNullException">The cache items loader for the cache item type <typeparamref name="TItem" /> has returned a null value instead of a list of cache items.</exception>
+            <exception cref="T:AutoIndexCache.ItemsLoaderFailedException">The cache items loader for the cache item type <typeparamref name="TItem" /> has thrown an exception.</exception>
+            <exception cref="T:AutoIndexCache.ItemsAccessedFromInsideItemsLoaderException">An attempt was made to access cache items of the type <typeparamref name="TItem" /> from inside the cache items loader for that cache item type.</exception>
+            <exception cref="T:AutoIndexCache.DuplicateKeyException">Multiple cache items of the type <typeparamref name="TItem" /> have the same key for this unique index.</exception>
+            <example>
+            <code>
+            <![CDATA[
+            var cache = new AutoIndexCache();
+            cache.SetItemsLoader<User>(() => this.LoadUsers());
+            var user1 = cache.Items<User>().UniqueIndex(a => a.Id).GetItemOrDefault(1);
+            ]]>
+            </code>
+            </example>
+        </member>
+        <member name="M:AutoIndexCache.IUniqueIndex`2.GetKeys">
+            <summary>
+            Gets the keys in this index.
+            </summary>
+            <returns>A read-only collection of the keys of this index.</returns>
+            <exception cref="T:AutoIndexCache.ItemsLoaderReturnedNullException">The cache items loader for the cache item type <typeparamref name="TItem" /> has returned a null value instead of a list of cache items.</exception>
+            <exception cref="T:AutoIndexCache.ItemsLoaderFailedException">The cache items loader for the cache item type <typeparamref name="TItem" /> has thrown an exception.</exception>
+            <exception cref="T:AutoIndexCache.ItemsAccessedFromInsideItemsLoaderException">An attempt was made to access cache items of the type <typeparamref name="TItem" /> from inside the cache items loader for that cache item type.</exception>
+            <exception cref="T:AutoIndexCache.DuplicateKeyException">Multiple cache items of the type <typeparamref name="TItem" /> have the same key for this unique index.</exception>
+            <example>
+            <code>
+            <![CDATA[
+            var cache = new AutoIndexCache();
+            cache.SetItemsLoader<User>(() => this.LoadUsers());
+            var usersIds = cache.Items<User>().UniqueIndex(a => a.Id).GetKeys();
+            ]]>
+            </code>
+            </example>
+        </member>
+        <member name="T:AutoIndexCache.UniqueIndex`2">
+            <summary>
+            A unique index for cached items of the type <typeparamref name="TItem" />.
+            </summary>
+            <typeparam name="TItem">The type of cache items indexed by the index.</typeparam>
+            <typeparam name="TKey">The type of keys in the index.</typeparam>
+            <remarks>All public and protected members of <see cref="T:AutoIndexCache.AutoIndexCache" /> are thread-safe and may be used concurrently from multiple threads.</remarks>
+        </member>
+        <member name="M:AutoIndexCache.UniqueIndex`2.#ctor(AutoIndexCache.ItemsList{`0},System.Func{`0,`1},System.String)">
+            <summary>
+            Initializes a new instance of this class.
+            </summary>
+            <param name="itemsList">The items list the index belongs to.</param>
+            <param name="keyExpression">The delegate that gets the unique index key for each cache item.</param>
+            <param name="keyExpressionString">The string representation of <paramref name="keyExpression" />.</param>
+        </member>
+        <member name="M:AutoIndexCache.UniqueIndex`2.ContainsKey(`1)">
+            <inheritdoc />
+        </member>
+        <member name="M:AutoIndexCache.UniqueIndex`2.GetItemOrDefault(`1)">
+            <inheritdoc />
+        </member>
+        <member name="M:AutoIndexCache.UniqueIndex`2.GetKeys">
+            <inheritdoc />
+        </member>
+        <member name="M:AutoIndexCache.UniqueIndex`2.Reset">
+            <inheritdoc />
+        </member>
+        <member name="M:AutoIndexCache.UniqueIndex`2.CreateIndexData">
+            <summary>
+            Creates up-to-date data for this index.
+            </summary>
+            <returns>The up-to-date data for this index.</returns>
+        </member>
+        <member name="T:AutoIndexCache.UniqueIndex`2.IndexData">
+            <summary>
+            The data of an <see cref="T:AutoIndexCache.UniqueIndex`2" />.
+            </summary>
+            <param name="keyToItem">Maps a key to the cache item that has that key.</param>
+            <param name="keys">The unique keys in the index.</param>
+            <param name="containsNullKey">Determines whether the index contains a null key.</param>
+            <param name="nullKeyItem">The cache item that has null as its key or null in case no such cache item exists.</param>
+        </member>
+        <member name="M:AutoIndexCache.UniqueIndex`2.IndexData.#ctor(System.Collections.Generic.Dictionary{`1,`0},System.Collections.Generic.HashSet{`1},System.Boolean,`0)">
+            <summary>
+            The data of an <see cref="T:AutoIndexCache.UniqueIndex`2" />.
+            </summary>
+            <param name="keyToItem">Maps a key to the cache item that has that key.</param>
+            <param name="keys">The unique keys in the index.</param>
+            <param name="containsNullKey">Determines whether the index contains a null key.</param>
+            <param name="nullKeyItem">The cache item that has null as its key or null in case no such cache item exists.</param>
+        </member>
+    </members>
+</doc>
