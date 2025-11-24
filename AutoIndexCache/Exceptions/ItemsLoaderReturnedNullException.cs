@@ -1,9 +1,7 @@
-﻿using System;
-
-namespace AutoIndexCache;
+﻿namespace AutoIndexCache.Exceptions;
 
 /// <summary>
-/// Thrown when a cache items loader has returned a null value instead of a list of cache items.
+/// Thrown when a cache items loader has returned a null reference instead of a list of cache items.
 /// </summary>
 #pragma warning disable CA1032
 public class ItemsLoaderReturnedNullException : Exception

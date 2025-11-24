@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace AutoIndexCache;
+﻿namespace AutoIndexCache.Exceptions;
 
 /// <summary>
 /// Thrown when an attempt was made to access cached items of certain type from inside the cache items loader for that cache item type (e.g. an attempt was made to access cached Users from inside the cache items loader for the User type).

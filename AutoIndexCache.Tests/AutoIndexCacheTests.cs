@@ -1,4 +1,5 @@
-﻿using AutoIndexCache.Tests.TestData;
+﻿using AutoIndexCache.Exceptions;
+using AutoIndexCache.Tests.TestData;
 using FakeItEasy;
 using FluentAssertions;
 using NUnit.Framework;
@@ -20,9 +21,7 @@ public class AutoIndexCacheTests : TestsBase
         User[] LoadUsers()
         {
             Interlocked.Increment(ref loadUsersInvocations);
-#pragma warning disable S2925
             Thread.Sleep(random.Next(10, 100));
-#pragma warning restore S2925
             return [];
         }
 
@@ -30,9 +29,7 @@ public class AutoIndexCacheTests : TestsBase
 
         void ThreadBody()
         {
-#pragma warning disable S2925
             Thread.Sleep(random.Next(10, 100));
-#pragma warning restore S2925
             cache.Items<User>().GetAllItems();
         }
 
@@ -66,9 +63,7 @@ public class AutoIndexCacheTests : TestsBase
 
         User[] LoadUsers()
         {
-#pragma warning disable S2925
             Thread.Sleep(waitTime);
-#pragma warning restore S2925
             return [];
         }
 

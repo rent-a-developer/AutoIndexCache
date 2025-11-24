@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace AutoIndexCache;
+﻿namespace AutoIndexCache.Exceptions;
 
 /// <summary>
 /// Thrown when a cache items loader has thrown an exception.

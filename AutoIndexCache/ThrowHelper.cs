@@ -1,8 +1,4 @@
-﻿using System;
-using System.Diagnostics.CodeAnalysis;
-using System.Runtime.CompilerServices;
-
-namespace AutoIndexCache;
+﻿namespace AutoIndexCache;
 
 /// <summary>
 /// Provides helper methods to throw exceptions.

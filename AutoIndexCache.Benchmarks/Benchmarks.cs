@@ -2,9 +2,6 @@
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Configs;
 
-// ReSharper disable LocalVariableHidesMember
-// ReSharper disable InconsistentNaming
-
 namespace AutoIndexCache.Benchmarks;
 
 [MemoryDiagnoser]
@@ -347,8 +344,6 @@ public class Benchmarks
     private IUniqueIndex<User, String> autoIndexCache_UniqueIndex_UserByUserName = null!;
     private Dictionary<Int64, User> dictionary_UserById = null!;
     private Dictionary<String, User> dictionary_UserByUserName = null!;
-
     private Dictionary<Int64, List<User>> dictionary_UsersByGroupId = null!;
-
     private User[] users = null!;
 }

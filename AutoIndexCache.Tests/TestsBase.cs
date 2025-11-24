@@ -2,8 +2,6 @@
 using AutoIndexCache.Tests.TestData;
 using NUnit.Framework;
 
-#pragma warning disable CS8618
-
 namespace AutoIndexCache.Tests;
 
 public abstract class TestsBase
@@ -34,7 +32,7 @@ public abstract class TestsBase
     /// <summary>
     /// Executes <paramref name="action" /> and measures the time it took to execute it.
     /// </summary>
-    /// <param name="action">The delegate to measure the execution time of.</param>
+    /// <param name="action">The function to measure the execution time of.</param>
     /// <returns>The time it took to execute <paramref name="action" />.</returns>
     protected static TimeSpan ExecutionTimeOf(Action action)
     {
@@ -45,6 +43,6 @@ public abstract class TestsBase
         return stopwatch.Elapsed;
     }
 
-    protected User[] TestUsers;
-    protected User FirstActiveTestUser;
+    protected User[] TestUsers = null!;
+    protected User FirstActiveTestUser = null!;
 }

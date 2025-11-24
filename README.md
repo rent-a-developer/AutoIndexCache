@@ -72,8 +72,10 @@ You can find the source code of the bechmarks [here](https://github.com/rent-a-d
 In these benchmarks the [Dictionary<TKey,TValue>](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.dictionary-2?view=net-9.0) is used to index cached items.  
 There is hardly any faster soltuion in .NET to index cached items.  
 However, the Dictionary is completely non-thread-safe.  
+
 ### ..._AutoIndexCache
 In these benchmarks the AutoIndexCache is used.
+
 ### ..._AutoIndexCacheOptimized
 In these bechmarks, also, the AutoIndexCache is used.  
 However, a trick was applied to drastically improve the performance:  

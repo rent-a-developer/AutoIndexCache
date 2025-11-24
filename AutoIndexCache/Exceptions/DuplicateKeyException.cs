@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace AutoIndexCache;
+﻿namespace AutoIndexCache.Exceptions;
 
 /// <summary>
 /// Thrown when multiple cache items have the same key for a unique index.

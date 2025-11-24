@@ -1,12 +1,8 @@
-﻿using AutoIndexCache.Tests.TestData;
+﻿using AutoIndexCache.Exceptions;
+using AutoIndexCache.Tests.TestData;
 using FakeItEasy;
 using FluentAssertions;
 using NUnit.Framework;
-
-// ReSharper disable ReturnValueOfPureMethodIsNotUsed
-#pragma warning disable CA1806
-#pragma warning disable CS8621
-#pragma warning disable CS8714 // The type cannot be used as type parameter in the generic type or method. Nullability of type argument doesn't match 'notnull' constraint.
 
 namespace AutoIndexCache.Tests;
 

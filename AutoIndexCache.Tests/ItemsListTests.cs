@@ -1,4 +1,5 @@
 ﻿using System.Data;
+using AutoIndexCache.Exceptions;
 using AutoIndexCache.Tests.TestData;
 using FakeItEasy;
 using FluentAssertions;
@@ -126,7 +127,7 @@ public class ItemsListTests : TestsBase
         cache.Invoking(c => c.Items<User>().ForceLoadItems())
             .Should()
             .Throw<ItemsLoaderReturnedNullException>()
-            .WithMessage("Could not load the cache items of the type 'AutoIndexCache.Tests.TestData.User'. The cache items loader for that cache item type returned a null value. It must return a list of cache items instead.");
+            .WithMessage("Could not load the cache items of the type 'AutoIndexCache.Tests.TestData.User'. The cache items loader for that cache item type returned a null reference. It must return a list of cache items instead.");
     }
 
     [Test]
@@ -298,7 +299,7 @@ public class ItemsListTests : TestsBase
         cache.Invoking(c => c.Items<User>().GetAllItems())
             .Should()
             .Throw<ItemsLoaderReturnedNullException>()
-            .WithMessage("Could not load the cache items of the type 'AutoIndexCache.Tests.TestData.User'. The cache items loader for that cache item type returned a null value. It must return a list of cache items instead.");
+            .WithMessage("Could not load the cache items of the type 'AutoIndexCache.Tests.TestData.User'. The cache items loader for that cache item type returned a null reference. It must return a list of cache items instead.");
     }
 
     [Test]
