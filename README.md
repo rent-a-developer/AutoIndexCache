@@ -140,7 +140,7 @@ PM> Install-Package AutoIndexCache -Source PathToTheNuGetPackage
 
 # Documentation
 
-The API documentation can be found [here](https://rent-a-developer.github.io/AutoIndexCache/api/AutoIndexCache.html).
+The API documentation can be found [here](https://rent-a-developer.github.io/AutoIndexCache/api/RentADeveloper.AutoIndexCache.html).
 
 # Contributors
 
