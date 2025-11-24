@@ -65,7 +65,7 @@ However, some overhead is still needed to make it thread-safe and for the auto i
 In the following benchmarks AutoIndexCache is compared to the [Dictionary<TKey,TValue>](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.dictionary-2?view=net-9.0) type.  
 You can find the source code of the bechmarks [here](https://github.com/rent-a-developer/AutoIndexCache/tree/main/AutoIndexCache.Benchmarks).
 
-![image](https://github.com/user-attachments/assets/91cb0214-0cbd-4a9c-896e-e1090b6c0e19)
+<img width="3054" height="1276" alt="image" src="https://github.com/user-attachments/assets/55da6363-5ea1-4445-8c5a-5db3b3bc6c39" />
 
 ## Explanation
 ### ..._Dicationary
