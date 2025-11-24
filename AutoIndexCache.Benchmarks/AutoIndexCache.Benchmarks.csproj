@@ -5,6 +5,8 @@
     <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+	<RootNamespace>RentADeveloper.AutoIndexCache.Benchmarks</RootNamespace>
+	<AssemblyName>AutoIndexCache.Benchmarks</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>

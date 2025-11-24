@@ -1,7 +1,7 @@
 ﻿[assembly: InternalsVisibleTo("AutoIndexCache.Tests")]
 [assembly: InternalsVisibleTo("AutoIndexCache.Benchmarks")]
 
-namespace AutoIndexCache;
+namespace RentADeveloper.AutoIndexCache;
 
 /// <summary>
 /// A thread-safe, lazy loading cache that automatically indexes cached items.

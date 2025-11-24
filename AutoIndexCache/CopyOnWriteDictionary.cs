@@ -1,4 +1,4 @@
-﻿namespace AutoIndexCache;
+﻿namespace RentADeveloper.AutoIndexCache;
 
 /// <summary>
 /// A thread-safe, append-only dictionary with internal copy-on-write behavior.

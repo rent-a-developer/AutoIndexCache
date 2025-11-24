@@ -1,6 +1,6 @@
 ﻿using BenchmarkDotNet.Configs;
 
-namespace AutoIndexCache.Benchmarks;
+namespace RentADeveloper.AutoIndexCache.Benchmarks;
 
 public class BenchmarksConfig : ManualConfig
 {

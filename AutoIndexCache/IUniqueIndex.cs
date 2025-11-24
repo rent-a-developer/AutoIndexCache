@@ -1,4 +1,6 @@
-﻿namespace AutoIndexCache;
+﻿using RentADeveloper.AutoIndexCache.Exceptions;
+
+namespace RentADeveloper.AutoIndexCache;
 
 internal interface IUniqueIndex
 {

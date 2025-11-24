@@ -1,4 +1,4 @@
-﻿namespace AutoIndexCache;
+﻿namespace RentADeveloper.AutoIndexCache;
 
 /// <summary>
 /// A non-unique index for cached items of the type <typeparamref name="TItem" />.

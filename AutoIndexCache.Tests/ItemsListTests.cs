@@ -1,11 +1,11 @@
 ﻿using System.Data;
-using AutoIndexCache.Exceptions;
-using AutoIndexCache.Tests.TestData;
 using FakeItEasy;
 using FluentAssertions;
 using NUnit.Framework;
+using RentADeveloper.AutoIndexCache.Exceptions;
+using RentADeveloper.AutoIndexCache.Tests.TestData;
 
-namespace AutoIndexCache.Tests;
+namespace RentADeveloper.AutoIndexCache.Tests;
 
 [TestFixture]
 public class ItemsListTests : TestsBase
@@ -37,12 +37,12 @@ public class ItemsListTests : TestsBase
         cache.Invoking(a => a.Items<User>().ForceLoadItems())
             .Should()
             .Throw<ItemsLoaderFailedException>()
-            .WithMessage("Could not load the cache items of the type 'AutoIndexCache.Tests.TestData.User'. The cache items loader for that cache item type threw an exception. See the inner exception for details.")
+            .WithMessage("Could not load the cache items of the type 'RentADeveloper.AutoIndexCache.Tests.TestData.User'. The cache items loader for that cache item type threw an exception. See the inner exception for details.")
             .WithInnerException<ItemsAccessedFromInsideItemsLoaderException>()
-            .WithMessage("Cannot access the cache items of the type 'AutoIndexCache.Tests.TestData.User'. The current thread is inside the cache items loader for that cache item type.");
+            .WithMessage("Cannot access the cache items of the type 'RentADeveloper.AutoIndexCache.Tests.TestData.User'. The current thread is inside the cache items loader for that cache item type.");
 
         thrownException.Should().BeOfType<ItemsAccessedFromInsideItemsLoaderException>();
-        ((ItemsAccessedFromInsideItemsLoaderException)thrownException).Message.Should().Be("Cannot access the cache items of the type 'AutoIndexCache.Tests.TestData.User'. The current thread is inside the cache items loader for that cache item type.");
+        ((ItemsAccessedFromInsideItemsLoaderException)thrownException).Message.Should().Be("Cannot access the cache items of the type 'RentADeveloper.AutoIndexCache.Tests.TestData.User'. The current thread is inside the cache items loader for that cache item type.");
     }
 
     [Test]
@@ -89,28 +89,28 @@ public class ItemsListTests : TestsBase
         cache.Invoking(a => a.Items<User>().ForceLoadItems())
             .Should()
             .Throw<ItemsLoaderFailedException>()
-            .WithMessage("Could not load the cache items of the type 'AutoIndexCache.Tests.TestData.User'. The cache items loader for that cache item type threw an exception. See the inner exception for details.")
+            .WithMessage("Could not load the cache items of the type 'RentADeveloper.AutoIndexCache.Tests.TestData.User'. The cache items loader for that cache item type threw an exception. See the inner exception for details.")
             .WithInnerException<ItemsLoaderFailedException>()
-            .WithMessage("Could not load the cache items of the type 'AutoIndexCache.Tests.TestData.Group'. The cache items loader for that cache item type threw an exception. See the inner exception for details.")
+            .WithMessage("Could not load the cache items of the type 'RentADeveloper.AutoIndexCache.Tests.TestData.Group'. The cache items loader for that cache item type threw an exception. See the inner exception for details.")
             .WithInnerException<ItemsAccessedFromInsideItemsLoaderException>()
-            .WithMessage("Cannot access the cache items of the type 'AutoIndexCache.Tests.TestData.User'. The current thread is inside the cache items loader for that cache item type.");
+            .WithMessage("Cannot access the cache items of the type 'RentADeveloper.AutoIndexCache.Tests.TestData.User'. The current thread is inside the cache items loader for that cache item type.");
 
         cache.Invoking(a => a.Items<Group>().ForceLoadItems())
             .Should()
             .Throw<ItemsLoaderFailedException>()
-            .WithMessage("Could not load the cache items of the type 'AutoIndexCache.Tests.TestData.Group'. The cache items loader for that cache item type threw an exception. See the inner exception for details.")
+            .WithMessage("Could not load the cache items of the type 'RentADeveloper.AutoIndexCache.Tests.TestData.Group'. The cache items loader for that cache item type threw an exception. See the inner exception for details.")
             .WithInnerException<ItemsLoaderFailedException>()
-            .WithMessage("Could not load the cache items of the type 'AutoIndexCache.Tests.TestData.User'. The cache items loader for that cache item type threw an exception. See the inner exception for details.")
+            .WithMessage("Could not load the cache items of the type 'RentADeveloper.AutoIndexCache.Tests.TestData.User'. The cache items loader for that cache item type threw an exception. See the inner exception for details.")
             .WithInnerException<ItemsAccessedFromInsideItemsLoaderException>()
-            .WithMessage("Cannot access the cache items of the type 'AutoIndexCache.Tests.TestData.Group'. The current thread is inside the cache items loader for that cache item type.");
+            .WithMessage("Cannot access the cache items of the type 'RentADeveloper.AutoIndexCache.Tests.TestData.Group'. The current thread is inside the cache items loader for that cache item type.");
 
         loadUsersThrownException.Should().BeOfType<ItemsAccessedFromInsideItemsLoaderException>();
-        ((ItemsAccessedFromInsideItemsLoaderException)loadUsersThrownException).Message.Should().Be("Cannot access the cache items of the type 'AutoIndexCache.Tests.TestData.Group'. The current thread is inside the cache items loader for that cache item type.");
+        ((ItemsAccessedFromInsideItemsLoaderException)loadUsersThrownException).Message.Should().Be("Cannot access the cache items of the type 'RentADeveloper.AutoIndexCache.Tests.TestData.Group'. The current thread is inside the cache items loader for that cache item type.");
 
         loadGroupsThrownException.Should().BeOfType<ItemsLoaderFailedException>();
-        ((ItemsLoaderFailedException)loadGroupsThrownException).Message.Should().Be("Could not load the cache items of the type 'AutoIndexCache.Tests.TestData.User'. The cache items loader for that cache item type threw an exception. See the inner exception for details.");
+        ((ItemsLoaderFailedException)loadGroupsThrownException).Message.Should().Be("Could not load the cache items of the type 'RentADeveloper.AutoIndexCache.Tests.TestData.User'. The cache items loader for that cache item type threw an exception. See the inner exception for details.");
         ((ItemsLoaderFailedException)loadGroupsThrownException).InnerException.Should().BeOfType<ItemsAccessedFromInsideItemsLoaderException>();
-        ((ItemsLoaderFailedException)loadGroupsThrownException).InnerException?.Message.Should().Be("Cannot access the cache items of the type 'AutoIndexCache.Tests.TestData.Group'. The current thread is inside the cache items loader for that cache item type.");
+        ((ItemsLoaderFailedException)loadGroupsThrownException).InnerException?.Message.Should().Be("Cannot access the cache items of the type 'RentADeveloper.AutoIndexCache.Tests.TestData.Group'. The current thread is inside the cache items loader for that cache item type.");
     }
 
     [Test]
@@ -127,7 +127,7 @@ public class ItemsListTests : TestsBase
         cache.Invoking(c => c.Items<User>().ForceLoadItems())
             .Should()
             .Throw<ItemsLoaderReturnedNullException>()
-            .WithMessage("Could not load the cache items of the type 'AutoIndexCache.Tests.TestData.User'. The cache items loader for that cache item type returned a null reference. It must return a list of cache items instead.");
+            .WithMessage("Could not load the cache items of the type 'RentADeveloper.AutoIndexCache.Tests.TestData.User'. The cache items loader for that cache item type returned a null reference. It must return a list of cache items instead.");
     }
 
     [Test]
@@ -140,7 +140,7 @@ public class ItemsListTests : TestsBase
         cache.Invoking(a => a.Items<User>().ForceLoadItems())
             .Should()
             .Throw<ItemsLoaderFailedException>()
-            .WithMessage("Could not load the cache items of the type 'AutoIndexCache.Tests.TestData.User'. The cache items loader for that cache item type threw an exception. See the inner exception for details.")
+            .WithMessage("Could not load the cache items of the type 'RentADeveloper.AutoIndexCache.Tests.TestData.User'. The cache items loader for that cache item type threw an exception. See the inner exception for details.")
             .WithInnerException<DataException>()
             .WithMessage("Test Items Loader Exception");
     }
@@ -209,12 +209,12 @@ public class ItemsListTests : TestsBase
         cache.Invoking(a => a.Items<User>().GetAllItems())
             .Should()
             .Throw<ItemsLoaderFailedException>()
-            .WithMessage("Could not load the cache items of the type 'AutoIndexCache.Tests.TestData.User'. The cache items loader for that cache item type threw an exception. See the inner exception for details.")
+            .WithMessage("Could not load the cache items of the type 'RentADeveloper.AutoIndexCache.Tests.TestData.User'. The cache items loader for that cache item type threw an exception. See the inner exception for details.")
             .WithInnerException<ItemsAccessedFromInsideItemsLoaderException>()
-            .WithMessage("Cannot access the cache items of the type 'AutoIndexCache.Tests.TestData.User'. The current thread is inside the cache items loader for that cache item type.");
+            .WithMessage("Cannot access the cache items of the type 'RentADeveloper.AutoIndexCache.Tests.TestData.User'. The current thread is inside the cache items loader for that cache item type.");
 
         thrownException.Should().BeOfType<ItemsAccessedFromInsideItemsLoaderException>();
-        ((ItemsAccessedFromInsideItemsLoaderException)thrownException).Message.Should().Be("Cannot access the cache items of the type 'AutoIndexCache.Tests.TestData.User'. The current thread is inside the cache items loader for that cache item type.");
+        ((ItemsAccessedFromInsideItemsLoaderException)thrownException).Message.Should().Be("Cannot access the cache items of the type 'RentADeveloper.AutoIndexCache.Tests.TestData.User'. The current thread is inside the cache items loader for that cache item type.");
     }
 
     [Test]
@@ -261,28 +261,28 @@ public class ItemsListTests : TestsBase
         cache.Invoking(a => a.Items<User>().GetAllItems())
             .Should()
             .Throw<ItemsLoaderFailedException>()
-            .WithMessage("Could not load the cache items of the type 'AutoIndexCache.Tests.TestData.User'. The cache items loader for that cache item type threw an exception. See the inner exception for details.")
+            .WithMessage("Could not load the cache items of the type 'RentADeveloper.AutoIndexCache.Tests.TestData.User'. The cache items loader for that cache item type threw an exception. See the inner exception for details.")
             .WithInnerException<ItemsLoaderFailedException>()
-            .WithMessage("Could not load the cache items of the type 'AutoIndexCache.Tests.TestData.Group'. The cache items loader for that cache item type threw an exception. See the inner exception for details.")
+            .WithMessage("Could not load the cache items of the type 'RentADeveloper.AutoIndexCache.Tests.TestData.Group'. The cache items loader for that cache item type threw an exception. See the inner exception for details.")
             .WithInnerException<ItemsAccessedFromInsideItemsLoaderException>()
-            .WithMessage("Cannot access the cache items of the type 'AutoIndexCache.Tests.TestData.User'. The current thread is inside the cache items loader for that cache item type.");
+            .WithMessage("Cannot access the cache items of the type 'RentADeveloper.AutoIndexCache.Tests.TestData.User'. The current thread is inside the cache items loader for that cache item type.");
 
         cache.Invoking(a => a.Items<Group>().GetAllItems())
             .Should()
             .Throw<ItemsLoaderFailedException>()
-            .WithMessage("Could not load the cache items of the type 'AutoIndexCache.Tests.TestData.Group'. The cache items loader for that cache item type threw an exception. See the inner exception for details.")
+            .WithMessage("Could not load the cache items of the type 'RentADeveloper.AutoIndexCache.Tests.TestData.Group'. The cache items loader for that cache item type threw an exception. See the inner exception for details.")
             .WithInnerException<ItemsLoaderFailedException>()
-            .WithMessage("Could not load the cache items of the type 'AutoIndexCache.Tests.TestData.User'. The cache items loader for that cache item type threw an exception. See the inner exception for details.")
+            .WithMessage("Could not load the cache items of the type 'RentADeveloper.AutoIndexCache.Tests.TestData.User'. The cache items loader for that cache item type threw an exception. See the inner exception for details.")
             .WithInnerException<ItemsAccessedFromInsideItemsLoaderException>()
-            .WithMessage("Cannot access the cache items of the type 'AutoIndexCache.Tests.TestData.Group'. The current thread is inside the cache items loader for that cache item type.");
+            .WithMessage("Cannot access the cache items of the type 'RentADeveloper.AutoIndexCache.Tests.TestData.Group'. The current thread is inside the cache items loader for that cache item type.");
 
         loadUsersThrownException.Should().BeOfType<ItemsAccessedFromInsideItemsLoaderException>();
-        ((ItemsAccessedFromInsideItemsLoaderException)loadUsersThrownException).Message.Should().Be("Cannot access the cache items of the type 'AutoIndexCache.Tests.TestData.Group'. The current thread is inside the cache items loader for that cache item type.");
+        ((ItemsAccessedFromInsideItemsLoaderException)loadUsersThrownException).Message.Should().Be("Cannot access the cache items of the type 'RentADeveloper.AutoIndexCache.Tests.TestData.Group'. The current thread is inside the cache items loader for that cache item type.");
 
         loadGroupsThrownException.Should().BeOfType<ItemsLoaderFailedException>();
-        ((ItemsLoaderFailedException)loadGroupsThrownException).Message.Should().Be("Could not load the cache items of the type 'AutoIndexCache.Tests.TestData.User'. The cache items loader for that cache item type threw an exception. See the inner exception for details.");
+        ((ItemsLoaderFailedException)loadGroupsThrownException).Message.Should().Be("Could not load the cache items of the type 'RentADeveloper.AutoIndexCache.Tests.TestData.User'. The cache items loader for that cache item type threw an exception. See the inner exception for details.");
         ((ItemsLoaderFailedException)loadGroupsThrownException).InnerException.Should().BeOfType<ItemsAccessedFromInsideItemsLoaderException>();
-        ((ItemsLoaderFailedException)loadGroupsThrownException).InnerException?.Message.Should().Be("Cannot access the cache items of the type 'AutoIndexCache.Tests.TestData.Group'. The current thread is inside the cache items loader for that cache item type.");
+        ((ItemsLoaderFailedException)loadGroupsThrownException).InnerException?.Message.Should().Be("Cannot access the cache items of the type 'RentADeveloper.AutoIndexCache.Tests.TestData.Group'. The current thread is inside the cache items loader for that cache item type.");
     }
 
     [Test]
@@ -299,7 +299,7 @@ public class ItemsListTests : TestsBase
         cache.Invoking(c => c.Items<User>().GetAllItems())
             .Should()
             .Throw<ItemsLoaderReturnedNullException>()
-            .WithMessage("Could not load the cache items of the type 'AutoIndexCache.Tests.TestData.User'. The cache items loader for that cache item type returned a null reference. It must return a list of cache items instead.");
+            .WithMessage("Could not load the cache items of the type 'RentADeveloper.AutoIndexCache.Tests.TestData.User'. The cache items loader for that cache item type returned a null reference. It must return a list of cache items instead.");
     }
 
     [Test]
@@ -312,7 +312,7 @@ public class ItemsListTests : TestsBase
         cache.Invoking(a => a.Items<User>().GetAllItems())
             .Should()
             .Throw<ItemsLoaderFailedException>()
-            .WithMessage("Could not load the cache items of the type 'AutoIndexCache.Tests.TestData.User'. The cache items loader for that cache item type threw an exception. See the inner exception for details.")
+            .WithMessage("Could not load the cache items of the type 'RentADeveloper.AutoIndexCache.Tests.TestData.User'. The cache items loader for that cache item type threw an exception. See the inner exception for details.")
             .WithInnerException<DataException>()
             .WithMessage("Test Items Loader Exception");
     }
@@ -410,12 +410,12 @@ public class ItemsListTests : TestsBase
         cache.Invoking(a => a.Items<User>().GetAllItems())
             .Should()
             .Throw<ItemsLoaderFailedException>()
-            .WithMessage("Could not load the cache items of the type 'AutoIndexCache.Tests.TestData.User'. The cache items loader for that cache item type threw an exception. See the inner exception for details.")
+            .WithMessage("Could not load the cache items of the type 'RentADeveloper.AutoIndexCache.Tests.TestData.User'. The cache items loader for that cache item type threw an exception. See the inner exception for details.")
             .WithInnerException<ItemsAccessedFromInsideItemsLoaderException>()
-            .WithMessage("Cannot reset the cache items of the type 'AutoIndexCache.Tests.TestData.User'. The current thread is inside the cache items loader for that cache item type.");
+            .WithMessage("Cannot reset the cache items of the type 'RentADeveloper.AutoIndexCache.Tests.TestData.User'. The current thread is inside the cache items loader for that cache item type.");
 
         thrownException.Should().BeOfType<ItemsAccessedFromInsideItemsLoaderException>();
-        ((ItemsAccessedFromInsideItemsLoaderException)thrownException).Message.Should().Be("Cannot reset the cache items of the type 'AutoIndexCache.Tests.TestData.User'. The current thread is inside the cache items loader for that cache item type.");
+        ((ItemsAccessedFromInsideItemsLoaderException)thrownException).Message.Should().Be("Cannot reset the cache items of the type 'RentADeveloper.AutoIndexCache.Tests.TestData.User'. The current thread is inside the cache items loader for that cache item type.");
     }
 
     [Test]

@@ -1,8 +1,8 @@
 ﻿using System.Diagnostics;
-using AutoIndexCache.Tests.TestData;
 using NUnit.Framework;
+using RentADeveloper.AutoIndexCache.Tests.TestData;
 
-namespace AutoIndexCache.Tests;
+namespace RentADeveloper.AutoIndexCache.Tests;
 
 public abstract class TestsBase
 {

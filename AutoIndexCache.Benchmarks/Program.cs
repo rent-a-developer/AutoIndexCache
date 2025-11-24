@@ -1,6 +1,6 @@
 ﻿using BenchmarkDotNet.Running;
 
-namespace AutoIndexCache.Benchmarks;
+namespace RentADeveloper.AutoIndexCache.Benchmarks;
 
 internal class Program
 {

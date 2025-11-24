@@ -1,4 +1,4 @@
-﻿namespace AutoIndexCache.Tests.TestData;
+﻿namespace RentADeveloper.AutoIndexCache.Tests.TestData;
 
 public class User(Int64 id, String userName, Int64 groupId, Boolean isActive)
 {

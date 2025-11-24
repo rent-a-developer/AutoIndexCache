@@ -4,7 +4,7 @@ using BenchmarkDotNet.Order;
 using BenchmarkDotNet.Reports;
 using BenchmarkDotNet.Running;
 
-namespace AutoIndexCache.Benchmarks;
+namespace RentADeveloper.AutoIndexCache.Benchmarks;
 
 public class BenchmarksOrderer : IOrderer
 {

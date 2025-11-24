@@ -1,6 +1,7 @@
-﻿using KeyExpressionString = System.String;
+﻿using RentADeveloper.AutoIndexCache.Exceptions;
+using KeyExpressionString = System.String;
 
-namespace AutoIndexCache;
+namespace RentADeveloper.AutoIndexCache;
 
 /// <summary>
 /// A list of cached items of the type <typeparamref name="TItem" />.

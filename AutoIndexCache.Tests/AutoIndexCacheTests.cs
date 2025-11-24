@@ -1,10 +1,10 @@
-﻿using AutoIndexCache.Exceptions;
-using AutoIndexCache.Tests.TestData;
-using FakeItEasy;
+﻿using FakeItEasy;
 using FluentAssertions;
 using NUnit.Framework;
+using RentADeveloper.AutoIndexCache.Exceptions;
+using RentADeveloper.AutoIndexCache.Tests.TestData;
 
-namespace AutoIndexCache.Tests;
+namespace RentADeveloper.AutoIndexCache.Tests;
 
 [TestFixture]
 public class AutoIndexCacheTests : TestsBase
@@ -143,7 +143,7 @@ public class AutoIndexCacheTests : TestsBase
         cache.Invoking(c => c.Items<User>())
             .Should()
             .Throw<MissingItemsLoaderException>()
-            .WithMessage("Cannot get cache items of type 'AutoIndexCache.Tests.TestData.User'. No cache items loader for this cache item type is set on this instance. Use the method AutoIndexCache.SetItemsLoader to set a cache items loader for the cache item type before trying to access the cache items of that type.");
+            .WithMessage("Cannot get cache items of type 'RentADeveloper.AutoIndexCache.Tests.TestData.User'. No cache items loader for this cache item type is set on this instance. Use the method AutoIndexCache.SetItemsLoader to set a cache items loader for the cache item type before trying to access the cache items of that type.");
     }
 
     [Test]

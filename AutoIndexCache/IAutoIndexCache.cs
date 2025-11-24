@@ -1,4 +1,6 @@
-﻿namespace AutoIndexCache;
+﻿using RentADeveloper.AutoIndexCache.Exceptions;
+
+namespace RentADeveloper.AutoIndexCache;
 
 /// <summary>
 /// Represents a thread-safe, lazy loading cache that automatically indexes cached items.

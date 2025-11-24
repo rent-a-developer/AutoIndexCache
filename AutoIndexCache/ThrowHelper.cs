@@ -1,4 +1,6 @@
-﻿namespace AutoIndexCache;
+﻿using RentADeveloper.AutoIndexCache.Exceptions;
+
+namespace RentADeveloper.AutoIndexCache;
 
 /// <summary>
 /// Provides helper methods to throw exceptions.

@@ -1,4 +1,4 @@
-﻿namespace AutoIndexCache.Exceptions;
+﻿namespace RentADeveloper.AutoIndexCache.Exceptions;
 
 /// <summary>
 /// Thrown when multiple cache items have the same key for a unique index.

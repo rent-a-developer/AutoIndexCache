@@ -31,6 +31,9 @@
 		<AnalysisLevel>latest-all</AnalysisLevel>
 		<TieredCompilation>true</TieredCompilation>
 		<TieredPGO>true</TieredPGO>
+		<RootNamespace>RentADeveloper.AutoIndexCache</RootNamespace>
+		<AssemblyTitle>rent-a-developer AutoIndexCache</AssemblyTitle>
+		<AssemblyName>RentADeveloper.AutoIndexCache</AssemblyName>
 	</PropertyGroup>
 
 	<ItemGroup>

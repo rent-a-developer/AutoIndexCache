@@ -1,4 +1,4 @@
-﻿namespace AutoIndexCache.Exceptions;
+﻿namespace RentADeveloper.AutoIndexCache.Exceptions;
 
 /// <summary>
 /// Thrown when a cache items loader has returned a null reference instead of a list of cache items.

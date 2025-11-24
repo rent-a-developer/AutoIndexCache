@@ -6,7 +6,7 @@ A high-performance, thread-safe cache for .NET applications that provides automa
 
 ```csharp
 using System;
-using AutoIndexCache;
+using RentADeveloper.AutoIndexCache;
 
 public class User
 {
@@ -20,7 +20,7 @@ public class Program
 {
     public static void Main(String[] args)
     {
-        var cache = new AutoIndexCache.AutoIndexCache();
+        var cache = new AutoIndexCache();
 
         cache.SetItemsLoader(() => LoadUsers());
 
@@ -49,7 +49,7 @@ public class Program
 
         for (var i = 1; i <= result.Length; i++)
         {
-            result[i-1] = new() { Id = i, UserName = "User " + i, GroupId = i % 2 == 0 ? 2 : 1, IsActive = i % 2 == 0 };
+            result[i - 1] = new() { Id = i, UserName = "User " + i, GroupId = i % 2 == 0 ? 2 : 1, IsActive = i % 2 == 0 };
         }
 
         return result;

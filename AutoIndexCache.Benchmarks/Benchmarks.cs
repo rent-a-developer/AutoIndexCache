@@ -1,8 +1,8 @@
-﻿using AutoIndexCache.Tests.TestData;
-using BenchmarkDotNet.Attributes;
+﻿using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Configs;
+using RentADeveloper.AutoIndexCache.Tests.TestData;
 
-namespace AutoIndexCache.Benchmarks;
+namespace RentADeveloper.AutoIndexCache.Benchmarks;
 
 [MemoryDiagnoser]
 [GroupBenchmarksBy(BenchmarkLogicalGroupRule.ByCategory)]

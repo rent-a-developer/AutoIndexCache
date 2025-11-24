@@ -1,4 +1,4 @@
-﻿namespace AutoIndexCache.Exceptions;
+﻿namespace RentADeveloper.AutoIndexCache.Exceptions;
 
 /// <summary>
 /// Thrown when an attempt was made to access cached items of certain type when no cache items loader has been set yet for that cache item type.
