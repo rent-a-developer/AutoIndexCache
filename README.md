@@ -1,5 +1,5 @@
-![NuGet Version](https://img.shields.io/nuget/v/RentADeveloper.AutoIndexCache?link=https%3A%2F%2Fwww.nuget.org%2Fpackages%2FRentADeveloper.AutoIndexCache%2F)
-[![license](https://img.shields.io/badge/License-MIT-purple.svg)](LICENSE)
+[![NuGet Version](https://img.shields.io/nuget/v/RentADeveloper.AutoIndexCache)](https://www.nuget.org/packages/RentADeveloper.AutoIndexCache/)
+[![license](https://img.shields.io/badge/License-MIT-purple.svg)](LICENSE.md)
 ![semver](https://img.shields.io/badge/semver-1.3.0-blue)
 
 # AutoIndexCache
