@@ -1,3 +1,4 @@
+![NuGet Version](https://img.shields.io/nuget/v/RentADeveloper.AutoIndexCache)
 [![license](https://img.shields.io/badge/License-MIT-purple.svg)](LICENSE)
 ![semver](https://img.shields.io/badge/semver-1.3.0-blue)
 
@@ -133,9 +134,9 @@ This library is licensed under the [MIT license](LICENSE.md).
 # Installation
 First, [install NuGet](http://docs.nuget.org/docs/start-here/installing-nuget).
 
-Then download a release from the [releases page](https://github.com/rent-a-developer/AutoIndexCache/releases) and install via the NuGet Package Manager:
+Then install the [NuGet package](https://www.nuget.org/packages/RentADeveloper.AutoIndexCache/) from the package manager console:
 ```shell
-PM> Install-Package AutoIndexCache -Source PathToTheNuGetPackage
+PM> Install-Package RentADeveloper.AutoIndexCache
 ```
 
 # Documentation
