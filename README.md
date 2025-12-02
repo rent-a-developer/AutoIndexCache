@@ -1,4 +1,5 @@
 [![NuGet Version](https://img.shields.io/nuget/v/RentADeveloper.AutoIndexCache)](https://www.nuget.org/packages/RentADeveloper.AutoIndexCache/)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=rent-a-developer_AutoIndexCache&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=rent-a-developer_AutoIndexCache)
 [![license](https://img.shields.io/badge/License-MIT-purple.svg)](LICENSE.md)
 ![semver](https://img.shields.io/badge/semver-1.3.0-blue)
 
