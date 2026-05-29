@@ -1,7 +1,7 @@
-[![NuGet Version](https://img.shields.io/nuget/v/RentADeveloper.AutoIndexCache)](https://www.nuget.org/packages/RentADeveloper.AutoIndexCache/)
+[![NuGet Version](https://img.shields.io/nuget/v/AutoIndexCache)](https://www.nuget.org/packages/AutoIndexCache/)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=rent-a-developer_AutoIndexCache&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=rent-a-developer_AutoIndexCache)
 [![license](https://img.shields.io/badge/License-MIT-purple.svg)](LICENSE.md)
-![semver](https://img.shields.io/badge/semver-1.3.0-blue)
+![semver](https://img.shields.io/badge/semver-2.0.0-blue)
 
 # AutoIndexCache
 A high-performance, thread-safe cache for .NET applications that provides automatic indexing of cached data.
@@ -135,9 +135,9 @@ This library is licensed under the [MIT license](LICENSE.md).
 # Installation
 First, [install NuGet](http://docs.nuget.org/docs/start-here/installing-nuget).
 
-Then install the [NuGet package](https://www.nuget.org/packages/RentADeveloper.AutoIndexCache/) from the package manager console:
+Then install the [NuGet package](https://www.nuget.org/packages/AutoIndexCache/) from the package manager console:
 ```shell
-PM> Install-Package RentADeveloper.AutoIndexCache
+PM> Install-Package AutoIndexCache
 ```
 
 # Documentation

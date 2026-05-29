@@ -1,0 +1,10 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="CREATERELEASE.md" />
+    <File Path="LICENSE.md" />
+    <File Path="README.md" />
+  </Folder>
+  <Project Path="AutoIndexCache.Benchmarks/AutoIndexCache.Benchmarks.csproj" />
+  <Project Path="AutoIndexCache.Tests/AutoIndexCache.Tests.csproj" />
+  <Project Path="AutoIndexCache/AutoIndexCache.csproj" />
+</Solution>
